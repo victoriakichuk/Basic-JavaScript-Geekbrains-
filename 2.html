@@ -3,123 +3,90 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>Homework</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
   <style>
-    .message {
-      width: 150px;
-      padding: 20px;
-      background: lightgoldenrodyellow;
-      border: 1px solid orange;
-      visibility: hidden;
+    .products {
+      overflow: hidden;
+      margin-top: 40px;
     }
 
-    .error {
-      border: 0.3rem solid red;
+    .product {
+      float: left;
+      margin-right: 20px;
     }
   </style>
 </head>
 
 <body>
-  <!--
-Обязательное задание.
+  <header>
+    <button class="menuButton" data-type="phones">Показать смартфоны</button>
+    <button class="menuButton" data-type="tablets">Показать планшеты</button>
+    <button class="menuButton" data-type="tv">Показать телевизоры</button>
+  </header>
 
-Выполнить все задачи в теге script. Комментарии, в которых написаны задачи, не
-стирать, код с решением задачи пишем под комментарием.
--->
-
-  <input id="from" type="text">
-  В инпуте написано: <span></span>
-
-  <br>
-
-  <button class="messageBtn">Показать блок</button>
-  <div class="message">
-    Привет :)
-  </div>
-
-  <br>
-
-  <form>
-    <label>
-      Первый инпут:
-      <input class="form-control" type="text">
-    </label>
-    <br>
-    <br>
-    <label>
-      Второй инпут:
-      <select class="form-control">
-        <option value=""></option>
-        <option value="1">Один</option>
-        <option value="2">Два</option>
-      </select>
-    </label>
-    <br>
-    <br>
-    <button>Отправить</button>
-  </form>
+  <div class="products"></div>
 
   <script>
-    "use strict";
-
     /*
-    1. При изменении значения в input с id="from", значение содержащееся в нем
-    должно моментально отображаться в span. То есть при печати в input'е тег span
-    также должен меняться.
+    1. Программист Паша уволился с работы и не закончил задачу.
+    Задача состояла в том, чтобы при клике на какую-либо кнопку в теге header
+    выводить продукты в div с классом products.
+    Продукты, которые надо вывести, валидны и прописаны в объекте products.
+    Однако, Паша явно сделал много ошибок в других кусках кода, вам необходимо
+    исправить все ошибки и внимательно проверить чтоб код работал правильно и
+    ничего лишнего не выводилось в div с классом products.
     */
-    document.querySelector('from').addEventListener('input', event => {
-      spanEl = document.querySelector('span').addEventListener('change', event => {
-        spanEl.textContent = event.target.value;
-      })
-    });
 
-    /*
-    2. При клике на кнопку с классом messageBtn необходимо элементу с классом
-    message:
-    1) добавить два класса: animate__animated и animate__fadeInLeftBig
-    2) поставить данному элементу стиль visibility в значение 'visible'.
-     */
-    const message = document.querySelector('.message');
-    document.querySelector('button').addEventListener('click', () => {
-      message.style.visibility = 'visible';
-      message.classList.add('animate__animated', 'animate__fadeInLeftBig');
-    });
+    class Product {
+      constructor(id, name, price, imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.imageUrl = imageUrl;
+      }
 
-
-    /*
-    3. Необходимо при отправке формы проверить, заполнены ли все поля в этой
-    форме. Если какое-либо поле не заполнено, форма не должна отправляться, также
-    должны быть подсвечены незаполненные поля (необходимо поставить класс error
-    незаполненным полям).
-    Как только пользователь начинает заполнять какое-либо поле, необходимо,
-    при вводе в данное поле, произвести проверку:
-    Если поле пустое, необходимо данное поле подсветить (поставить класс error
-    данному полю).
-    Если поле было чем-либо заполнено, подсветку (класс error) необходимо убрать.
-     */
-
-    const formSub = document.querySelectorAll('input[form]').value;
-    if (!formSub) {
-      formSub.addEventListener('load', function (event) {
-        alert('Data sent!')
-      })
-    }
-    else {
-      formSub.addEventListener('error', function (event) {
-        alert('Oops! Check your form!')
-      })
+      /**
+       * @returns {string} html-разметка для товара
+       */
+      getProductMarkup() {
+        return `
+        <div class="product">
+            <div>${this.name}</div>
+            <img src="${this.imageUrl}" alt="">
+            <div>Цена: <span>${this.price}</span> р.</div>
+            <a href="https://example.com/producs/${this.id}">Подробнее</a>
+        </div>
+      `;
+      }
     }
 
-    formSub.addEventListener('input', event => {
-      if (!event.target.classList.contains('form-control')) {
+    const products = {
+      phones: [
+        new Product(1, "Смартфон 1", "2533", "https://loremflickr.com/200/300/goods?lock=31"),
+        new Product(2, "Смартфон 2", "3123", "https://loremflickr.com/200/300/goods?lock=32"),
+        new Product(3, "Смартфон 3", "6123", "https://loremflickr.com/200/300/goods?lock=33"),
+      ],
+      tablets: [
+        new Product(4, "Плашнет 1", "5239", "https://loremflickr.com/200/300/goods?lock=34"),
+        new Product(5, "Плашнет 2", "6483", "https://loremflickr.com/200/300/goods?lock=35"),
+      ],
+      tv: [
+        new Product(6, "Телевизор 1", "4314", "https://loremflickr.com/200/300/goods?lock=36"),
+        new Product(7, "Телевизор 2", "5412", "https://loremflickr.com/200/300/goods?lock=37"),
+        new Product(8, "Телевизор 3", "3577", "https://loremflickr.com/200/300/goods?lock=38"),
+        new Product(9, "Телевизор 4", "8714", "https://loremflickr.com/200/300/goods?lock=39"),
+      ],
+    };
+
+    const productsEl = document.querySelector('.products');
+    document.querySelector('.header').addEventListener('click', event => {
+      if (!event.target.classList.contains('menuButton')) {
         return;
       }
-      event.target.value === ''
-        ? event.target.classList.add('error')
-        : event.target.classList.remove('error');
+      productsEl.innerHTML = products[event.target.dataset.type]
+        .map(product => product.getProductMarkup().join(''));
     });
-
 
   </script>
 </body>
